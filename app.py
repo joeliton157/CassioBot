@@ -19,12 +19,17 @@ st.title("Cassio Bot 🤖")
 # --- Barra Lateral para Seleção do Modelo ---
 with st.sidebar:
     st.header("Configurações do Modelo")
-
-    model_name = st.selectbox(
-        "Escolha o modelo OpenAI:",
-        ("gpt-4o-mini", "gpt-3.5-turbo-0125", "gpt-3.5-turbo")
+    model_class = st.selectbox(
+        "Escolha o provedor do modelo:",
+        ("openai")
     )
-    openai_api_token = st.text_input("OpenAI API Key:", type="password")
+
+    if model_class == "openai":
+        model_name = st.selectbox(
+            "Escolha o modelo OpenAI:",
+            ("gpt-4o-mini", "gpt-3.5-turbo-0125", "gpt-3.5-turbo")
+        )
+        openai_api_token = st.text_input("OpenAI API Key:", type="password")
 
     temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
 
@@ -32,8 +37,8 @@ def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
     return llm
 
+
 def model_response(user_query, chat_history, model_class, model_name, temperature, api_key=None):
-    model_class = "openai"
     if model_class == "openai":
         if not api_key:  # Check if API key is provided
             raise ValueError("Para conversar comigo você precisa informar a chave API")
