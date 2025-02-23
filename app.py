@@ -19,34 +19,18 @@ st.title("Cassio Bot 🤖")
 # --- Barra Lateral para Seleção do Modelo ---
 with st.sidebar:
     st.header("Configurações do Modelo")
-    model_class = st.selectbox(
-        "Escolha o provedor do modelo:",
-        ("openai", "hf_hub")  # Removed Ollama for simplicity
+
+    model_name = st.selectbox(
+        "Escolha o modelo OpenAI:",
+        ("gpt-4o-mini", "gpt-3.5-turbo-0125", "gpt-3.5-turbo")
     )
-
-    if model_class == "openai":
-        model_name = st.selectbox(
-            "Escolha o modelo OpenAI:",
-            ("gpt-4o-mini", "gpt-3.5-turbo-0125", "gpt-3.5-turbo")
-        )
-        openai_api_token = st.text_input("OpenAI API Key:", type="password")
-        # No need to set os.environ here; we'll pass it directly
-
-    elif model_class == "hf_hub":
-        model_name = st.selectbox(
-            "Escolha o modelo Hugging Face Hub:",
-            ("meta-llama/Meta-Llama-3-8B-Instruct", "google/gemma-1.1-7b-it")
-        )
-        hf_api_token = st.text_input("Hugging Face API Token:", type="password")
-        if hf_api_token:  # Only set if provided
-            os.environ["HUGGINGFACEHUB_API_TOKEN"] = hf_api_token
+    openai_api_token = st.text_input("OpenAI API Key:", type="password")
 
     temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
 
 def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
     return llm
-
 
 def model_response(user_query, chat_history, model_class, model_name, temperature, api_key=None):
     if model_class == "openai":
