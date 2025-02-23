@@ -18,7 +18,6 @@ st.title("Cassio Bot 🤖")
 
 # --- Barra Lateral para Seleção do Modelo ---
 with st.sidebar:
-    model_class = "openai"
     st.header("Configurações do Modelo")
 
     model_name = st.selectbox(
@@ -34,6 +33,7 @@ def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     return llm
 
 def model_response(user_query, chat_history, model_class, model_name, temperature, api_key=None):
+    model_class = model_class
     if model_class == "openai":
         if not api_key:  # Check if API key is provided
             raise ValueError("Para conversar comigo você precisa informar a chave API")
