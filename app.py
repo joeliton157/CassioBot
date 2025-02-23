@@ -67,7 +67,7 @@ def model_response(user_query, chat_history, model_class, model_name, temperatur
         llm = model_hf_hub(model_name, temperature)
     elif model_class == "openai":
         if not api_key:  # Check if API key is provided
-            raise ValueError("A OpenAI API Key is required to use the OpenAI models.")
+            raise ValueError("Para conversar comigo você precisa informar a chave API")
         llm = model_openai(model_name, temperature, api_key)  # Pass api_key
     else:
         raise ValueError(f"model_class inválido: {model_class}")
