@@ -43,29 +43,13 @@ with st.sidebar:
 
     temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
 
-
-# Funções de Criação de Modelo (Modified to handle API key directly)
-def model_hf_hub(model_name, temperature):
-    llm = HuggingFaceHub(
-        repo_id=model_name,
-        model_kwargs={
-            "temperature": temperature,
-            "max_new_tokens": 512,
-        },
-    )
-    return llm
-
-
 def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
     return llm
 
 
 def model_response(user_query, chat_history, model_class, model_name, temperature, api_key=None):
-    # Carregamento da LLM (Handles missing API key)
-    if model_class == "hf_hub":
-        llm = model_hf_hub(model_name, temperature)
-    elif model_class == "openai":
+    if model_class == "openai":
         if not api_key:  # Check if API key is provided
             raise ValueError("Para conversar comigo você precisa informar a chave API")
         llm = model_openai(model_name, temperature, api_key)  # Pass api_key
