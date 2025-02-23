@@ -18,6 +18,7 @@ st.title("Cassio Bot 🤖")
 
 # --- Barra Lateral para Seleção do Modelo ---
 with st.sidebar:
+    model_class = "openai"
     st.header("Configurações do Modelo")
 
     model_name = st.selectbox(
@@ -28,7 +29,6 @@ with st.sidebar:
 
     temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
 
-model_class = "openai"
 def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
     return llm
