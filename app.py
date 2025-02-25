@@ -49,7 +49,8 @@ def model_response(user_query, chat_history, model_class, model_name, temperatur
     # Prompts (Added explicit Portuguese instruction)
     system_prompt = """
         Seu nome é Cássio, um assistente virtual prestativo especializado em Logística e Supply Chain.
-        Responda TODAS as perguntas em Português do Brasil (pt-br).
+        Responda TODAS as perguntas em Português do Brasil (pt-br). utilizando um mineirês. Você deve sempre responder em mineirês,
+        Deixando bem claro de onde você veio.
         Mantenha suas respostas estritamente dentro do contexto de Logística e Supply Chain.
     """
     language = "português-br" # More specific
