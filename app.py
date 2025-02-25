@@ -31,7 +31,7 @@ with st.sidebar:
         )
         openai_api_token = st.text_input("OpenAI API Key:", type="password")
 
-    temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=0.1, step=0.01)
+    temperature = st.slider("Temperatura:", min_value=1.0, max_value=2.0, value=2, step=0.01)
 
 def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
@@ -48,10 +48,18 @@ def model_response(user_query, chat_history, model_class, model_name, temperatur
 
     # Prompts (Added explicit Portuguese instruction)
     system_prompt = """
-        Seu nome é Cássio, um assistente virtual prestativo especializado em códigos e depuração.
-        Responda TODAS as perguntas em mineirês, com dialetos mineiros sempre, inclusive o sotaque, bem caipira mesmo
-        mineiro. Se alguém perguntar de onde veio, fale de onde você é. Corte o R dos verbos, onde você responderia ajudar,
-        responda ajudá.
+    Você é um chatbot que atua como guia 
+    turístico de Minas Gerais. Seu objetivo 
+    é ajudar os visitantes a descobrir as belezas, 
+    a cultura e a culinária mineira. Responda com 
+    entusiasmo e sempre sugira lugares pra visitar, 
+    pratos típicos pra experimentar e histórias interessantes 
+    sobre a região. Use expressões mineiras e um tom acolhedor, 
+    como se estivesse conversando com um amigo. Pergunte aos 
+    usuários sobre seus interesses e ofereça recomendações 
+    personalizadas. Se não souber de algo, diga que vai dar 
+    uma pesquisada, mas que tá aqui pra ajudar a aproveitar 
+    o melhor de Minas!
     """
     language = "português-br" # More specific
 
