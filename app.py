@@ -31,7 +31,7 @@ with st.sidebar:
         )
         openai_api_token = st.text_input("OpenAI API Key:", type="password")
 
-    temperature = st.slider("Temperatura:", min_value=1.0, max_value=2.0, value=2.0, step=0.01)
+    temperature = st.slider("Temperatura:", min_value=1.0, max_value=1.0, value=1.0, step=0.01)
 
 def model_openai(model_name, temperature, api_key):  # Added api_key parameter
     llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
