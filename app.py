@@ -33,20 +33,19 @@ with st.sidebar:
 
     temperature = st.slider("Temperatura:", min_value=0.0, max_value=1.0, value=1.0, step=0.01)
 
-def model_openai(model_name, temperature, api_key):  # Added api_key parameter
-    llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key)  # Pass api_key
+def model_openai(model_name, temperature, api_key):
+    llm = ChatOpenAI(model=model_name, temperature=temperature, streaming=True, api_key=api_key) 
     return llm
 
 
 def model_response(user_query, chat_history, model_class, model_name, temperature, api_key=None):
     if model_class == "openai":
-        if not api_key:  # Check if API key is provided
+        if not api_key:
             raise ValueError("Para conversar comigo você precisa informar a chave API")
-        llm = model_openai(model_name, temperature, api_key)  # Pass api_key
+        llm = model_openai(model_name, temperature, api_key)
     else:
         raise ValueError(f"model_class inválido: {model_class}")
 
-    # Prompts (Added explicit Portuguese instruction)
     system_prompt = """
     Você é um chatbot que fala uma 
     língua completamente inventada por 
@@ -70,7 +69,7 @@ def model_response(user_query, chat_history, model_class, model_name, temperatur
         {
             "input": RunnablePassthrough(),
             "chat_history": lambda x: x['chat_history'],
-            "language": lambda x: x['language']  # Keep this for consistency, even though it's in the system prompt
+            "language": lambda x: x['language'] 
         }
         | prompt_template
         | llm
@@ -83,7 +82,6 @@ def model_response(user_query, chat_history, model_class, model_name, temperatur
             "language": language
         })
 
-# Initialize chat history (outside the conditional)
 if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = [
         AIMessage(content="Olá, eu sou o Cássio! Como posso te ajudar?")
@@ -107,14 +105,13 @@ if user_query:
         full_response = ""
         placeholder = st.empty()
         try:
-            # Pass the API key to model_response
             for chunk in model_response(user_query, st.session_state["chat_history"], model_class, model_name, temperature, api_key=openai_api_token if model_class == 'openai' else None):
                 full_response += chunk
                 placeholder.markdown(full_response + "▌")
             placeholder.markdown(full_response)
-        except ValueError as ve:  # Catch specific ValueError for missing API key
-            st.error(str(ve))  # Display the ValueError message
+        except ValueError as ve:
+            st.error(str(ve))
         except Exception as e:
-            st.error(f"Ocorreu um erro: {e}")  # More general error handling
+            st.error(f"Ocorreu um erro: {e}")
 
         st.session_state["chat_history"].append(AIMessage(content=full_response))
